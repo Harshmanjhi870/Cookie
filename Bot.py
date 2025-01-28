@@ -1,9 +1,9 @@
 from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
 
 # Function to handle the /get command
-def get_cookie(update: Update, context: CallbackContext):
+async def get_cookie(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Create a session to make the request
     session = requests.Session()
     url = "https://www.youtube.com"
@@ -21,26 +21,20 @@ def get_cookie(update: Update, context: CallbackContext):
     with open("youtube_cookies.txt", "w") as file:
         file.write(cookie_data)
     
-    # Send the file to the user
-    update.message.reply_document(document=open("youtube_cookies.txt", "rb"))
+    # Send the file to the user (awaiting the send method)
+    await update.message.reply_document(document=open("youtube_cookies.txt", "rb"))
 
 # Set up the bot
-def main():
+async def main():
     # Replace 'YOUR_TOKEN' with your bot's token
-    token = "8116033425:AAFP7TkcGv9RCLJFkgJI9Hi5pm4Mvxl7cXo"
-    
-    # Application setup
-    application = Application.builder().token(token).build()
+    application = Application.builder().token("8116033425:AAEwO8PxawABtAi_wDmDM4JovZZgCpo14sA").build()
 
     # Add the /get command handler
     application.add_handler(CommandHandler("get", get_cookie))
 
     # Start the bot
-    application.run_polling()
+    await application.run_polling()
 
 if __name__ == '__main__':
-    main()
-
-
-    
- 
+    import asyncio
+    asyncio.run(main())
