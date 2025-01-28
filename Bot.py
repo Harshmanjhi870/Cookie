@@ -27,7 +27,7 @@ async def get_cookie(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Set up the bot
 def main():
     # Replace 'YOUR_TOKEN' with your bot's token
-    application = Application.builder().token("YOUR_TOKEN").build()
+    application = Application.builder().token("8116033425:AAEwO8PxawABtAi_wDmDM4JovZZgCpo14sA").build()
 
     # Add the /get command handler
     application.add_handler(CommandHandler("get", get_cookie))
