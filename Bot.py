@@ -1,9 +1,9 @@
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 import requests
 
 # Function to handle the /get command
-def get_cookie(update: Update, context: CallbackContext):
+async def get_cookie(update: Update, context: CallbackContext) -> None:
     # Code to create the file with the Python script
     code = '''import requests
 
@@ -17,20 +17,25 @@ print(session.cookies.get_dict())'''
         file.write(code)
     
     # Send the file to the user
-    update.message.reply_document(document=open("cookie_script.txt", "rb"))
+    await update.message.reply_document(document=open("cookie_script.txt", "rb"))
 
 # Set up the bot
 def main():
     # Replace 'YOUR_TOKEN' with your bot's token
-    updater = Updater("8116033425:AAFP7TkcGv9RCLJFkgJI9Hi5pm4Mvxl7cXo", use_context=True)
-    dispatcher = updater.dispatcher
+    token = "8116033425:AAFP7TkcGv9RCLJFkgJI9Hi5pm4Mvxl7cXo"
+    
+    # Application setup
+    application = Application.builder().token(token).build()
 
     # Add the /get command handler
-    dispatcher.add_handler(CommandHandler("get", get_cookie))
+    application.add_handler(CommandHandler("get", get_cookie))
 
     # Start the bot
-    updater.start_polling()
-    updater.idle()
+    application.run_polling()
 
 if __name__ == '__main__':
     main()
+
+
+    
+ 
