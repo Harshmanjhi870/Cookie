@@ -25,16 +25,15 @@ async def get_cookie(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_document(document=open("youtube_cookies.txt", "rb"))
 
 # Set up the bot
-async def main():
+def main():
     # Replace 'YOUR_TOKEN' with your bot's token
-    application = Application.builder().token("8116033425:AAEwO8PxawABtAi_wDmDM4JovZZgCpo14sA").build()
+    application = Application.builder().token("YOUR_TOKEN").build()
 
     # Add the /get command handler
     application.add_handler(CommandHandler("get", get_cookie))
 
     # Start the bot
-    await application.run_polling()
+    application.run_polling()
 
 if __name__ == '__main__':
-    import asyncio
-    asyncio.run(main())
+    main()
