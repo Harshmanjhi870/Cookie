@@ -3,21 +3,26 @@ from telegram.ext import Application, CommandHandler, CallbackContext
 import requests
 
 # Function to handle the /get command
-async def get_cookie(update: Update, context: CallbackContext) -> None:
-    # Code to create the file with the Python script
-    code = '''import requests
-
-session = requests.Session()
-url = "https://www.youtube.com"
-response = session.get(url)
-print(session.cookies.get_dict())'''
+def get_cookie(update: Update, context: CallbackContext):
+    # Create a session to make the request
+    session = requests.Session()
+    url = "https://www.youtube.com"
     
-    # Save the code to a file
-    with open("cookie_script.txt", "w") as file:
-        file.write(code)
+    # Get the response from YouTube
+    response = session.get(url)
+    
+    # Extract the cookies from the session
+    cookies = session.cookies.get_dict()
+    
+    # Prepare the cookies to send as a text file
+    cookie_data = "\n".join([f"{key}: {value}" for key, value in cookies.items()])
+    
+    # Save the cookies to a file
+    with open("youtube_cookies.txt", "w") as file:
+        file.write(cookie_data)
     
     # Send the file to the user
-    await update.message.reply_document(document=open("cookie_script.txt", "rb"))
+    update.message.reply_document(document=open("youtube_cookies.txt", "rb"))
 
 # Set up the bot
 def main():
